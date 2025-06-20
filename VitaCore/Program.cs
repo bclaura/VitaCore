@@ -22,9 +22,14 @@ builder.Services.AddSession();
 
 // Dependecy Injection - parsing the Connection String for the DB
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));*/
+
+var connStr = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connStr));
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
