@@ -8,13 +8,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.Development.json", optional: true)
     .AddEnvironmentVariables()
     .Build();
-
+*/
 builder.Host.UseSerilog();
 
 builder.Services.AddSession();
