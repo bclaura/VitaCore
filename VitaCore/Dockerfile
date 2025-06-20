@@ -28,7 +28,7 @@ RUN dotnet publish VitaCore.csproj -c Release -o /app/publish /p:UseAppHost=fals
 # Final image
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app/publish .        # Copie tot publish
+COPY appsettings.json ./                  # Asta îl asigur? în folderul final
 
-# ENTRYPOINT
 ENTRYPOINT ["dotnet", "VitaCore.dll"]
