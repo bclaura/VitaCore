@@ -39,5 +39,15 @@
 		</Content>
 	</ItemGroup>
 
+	<PropertyGroup>
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="Views\**\*.cshtml" CopyToOutputDirectory="Always" />
+		<Content Include="wwwroot\**\*" CopyToOutputDirectory="Always" />
+		<Content Include="appsettings*.json" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
 
 </Project>
