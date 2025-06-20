@@ -16,6 +16,10 @@ RUN dotnet restore "VitaCore/VitaCore.csproj"
 # Copy all source files
 COPY . .
 WORKDIR "/src/VitaCore"
+
+# Copiaz? configura?iile înainte de build/publish
+COPY VitaCore/appsettings*.json ./
+
 RUN dotnet build "VitaCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish app
