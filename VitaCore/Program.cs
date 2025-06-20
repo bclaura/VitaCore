@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
+    .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.Development.json", optional: true)
     .AddEnvironmentVariables()
