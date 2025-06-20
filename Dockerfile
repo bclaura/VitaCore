@@ -1,28 +1,27 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# Base runtime image
+# Base image for runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# SDK image to build the app
+# Build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy .csproj and restore
-COPY ["VitaCore.csproj", "./"]
-RUN dotnet restore "./VitaCore.csproj"
+# Copy and restore .csproj
+COPY ["VitaCore/VitaCore.csproj", "VitaCore/"]
+RUN dotnet restore "VitaCore/VitaCore.csproj"
 
-# Copy everything and build
+# Copy all source files
 COPY . .
-RUN dotnet build "./VitaCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/VitaCore"
+RUN dotnet build "VitaCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Publish the app
+# Publish app
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./VitaCore.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "VitaCore.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final image
 FROM base AS final
