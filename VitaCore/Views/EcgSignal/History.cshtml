@@ -1,0 +1,65 @@
+﻿@model List<VitaCore.Models.EcgSignalModel>
+
+@{
+    ViewData["Title"] = "ECG History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var index = 1;
+}
+
+<h2 class="text-center mb-4">ECG History</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(x => x.Timestamp))
+        {
+            <tr>
+                <td>@(index++)</td>
+                <td>@item.Timestamp.ToString("g")</td>
+                <td>
+                    <button class="btn btn-outline-primary" onclick="toggleSignal(@item.Id, this)">View</button>
+                    <div class="ecg-signal mt-2 text-wrap small" style="display:none;"></div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Patients" asp-action="Details" asp-route-id="@ViewBag.PatientId" class="btn btn-secondary">Back to Patient Details</a>
+
+@section Scripts {
+    <script>
+        function toggleSignal(id, button) {
+            const container = button.nextElementSibling;
+            const isVisible = container.style.display === "block";
+
+            if (isVisible) {
+                container.style.display = "none";
+                button.textContent = "View";
+                return;
+            }
+
+            fetch(`/EcgSignal/GetSignalRaw/${id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Signal not found");
+                    return response.json();
+                })
+                .then(signal => {
+                    container.textContent = signal;
+                    container.style.display = "block";
+                    button.textContent = "Hide";
+                })
+                .catch(error => {
+                    container.textContent = "Could not load signal.";
+                    container.style.display = "block";
+                    console.error(error);
+                });
+        }
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model VitaCore.Models.RecommendationModel
+
+@{
+    ViewData["Title"] = "Add Recommendation";
+}
+
+<h2>Add Recommendation</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Recommendation Type</label>
+        <select asp-for="RecommendationType" class="form-control">
+            <option value="cycling">Cycling</option>
+            <option value="running">Running</option>
+            <option value="walking">Walking</option>
+            <option value="other">Other option</option>
+        </select>
+        <span asp-validation-for="RecommendationType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Daily Duration</label>
+        <input asp-for="DailyDuration" type="number" class="form-control" />
+        <span asp-validation-for="DailyDuration" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Additional Instructions</label>
+        <textarea asp-for="AdditionalInstructions" class="form-control"></textarea>
+        <span asp-validation-for="AdditionalInstructions" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="PatientId" />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId" class="btn btn-secondary">Cancel</a>
+</form>
