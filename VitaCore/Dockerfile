@@ -1,21 +1,21 @@
-# ?? Runtime base image
+#Runtime base image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# ??? Build image
+#Build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copiem fi?ierele .csproj ?i appsettings
+# Copiem fisierele .csproj si appsettings
 COPY VitaCore.csproj ./
 COPY appsettings.json ./
 
 # Restore dependencies
 RUN dotnet restore VitaCore.csproj
 
-# Copiem tot restul fi?ierelor
+# Copiem tot restul fisierelor
 COPY . .
 
 # Build proiectul
@@ -28,7 +28,7 @@ RUN dotnet publish VitaCore.csproj -c Release -o /app/publish /p:UseAppHost=fals
 # Final image
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .        # Copie tot publish
-COPY appsettings.json ./                  # Asta îl asigur? în folderul final
+COPY --from=publish /app/publish .
+COPY appsettings.json ./ 
 
 ENTRYPOINT ["dotnet", "VitaCore.dll"]
